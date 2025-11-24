@@ -1,0 +1,65 @@
+{
+  "version": 2,
+  "installation_questions": [
+    {
+      "question": "WebUI Port Number",
+      "type": "number",
+      "key": "web_port_port_number",
+      "default": 20910,
+      "required": true
+    },
+    {
+      "question": "TCP Port Number",
+      "type": "number",
+      "key": "tcp_port_port_number",
+      "default": 20978,
+      "required": true
+    },
+    {
+      "question": "UDP Port Number",
+      "type": "number",
+      "key": "udp_port_port_number",
+      "default": 20970,
+      "required": true
+    }
+  ],
+  "ensure_directories_exists": [
+    "$LOCATION(ApplicationsPerformance)",
+    "$LOCATION(ApplicationsPerformance)/syncthing/config"
+  ],
+  "app_values": {
+    "network": {
+      "web_port": {
+        "bind_mode": "published",
+        "port_number": "$QUESTION(web_port_port_number)"
+      },
+      "tcp_port": {
+        "bind_mode": "published",
+        "port_number": "$QUESTION(tcp_port_port_number)"
+      },
+      "udp_port": {
+        "bind_mode": "published",
+        "port_number": "$QUESTION(udp_port_port_number)"
+      }
+    },
+    "storage": {
+      "config": "$HOST_PATH($LOCATION(ApplicationsPerformance)/syncthing/config)",
+      "additional_storage": [
+        "$MOUNTED_HOST_PATH($LOCATION(Documents), /documents)",
+        "$MOUNTED_HOST_PATH($LOCATION(Downloads), /downloads)",
+        "$MOUNTED_HOST_PATH($LOCATION(Media), /media)",
+        "$MOUNTED_HOST_PATH($LOCATION(Photos), /photos)",
+        "$MOUNTED_HOST_PATH($LOCATION(Music), /music)",
+        "$MOUNTED_HOST_PATH($LOCATION(Movies), /movies)",
+        "$MOUNTED_HOST_PATH($LOCATION(Shows), /shows)",
+        "$MOUNTED_HOST_PATH($LOCATION(Videos), /videos)"
+      ]
+    },
+    "resources": {
+      "limits": {
+        "cpus": 2,
+        "memory": "$MEMORY(10%, 2048)"
+      }
+    }
+  }
+}
